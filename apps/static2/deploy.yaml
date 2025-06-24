@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: echo-deployment2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: echo-server
+  template:
+    metadata:
+      labels:
+        app: echo-server
+        version: v1
+    spec:
+      containers:
+        - name: echo-server
+          image: hashicorp/http-echo:alpine
+          args:
+          - "-text=$SECRET_USERNAME&&$SECRET_PASSWORD"
+          ports:
+            - name: http-port
+              containerPort: 5678
+          env:
+          - name: SECRET_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: example2
+                key: username
+          - name: SECRET_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: example2
+                key: password
