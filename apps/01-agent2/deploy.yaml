@@ -30,12 +30,12 @@ spec:
           ports:
             - name: http-port
               containerPort: 5678
-          env:
-          - name: ECHO_TEXT
-            valueFrom:
-              secretKeyRef:
-                name: example1
-                key: password
+          # env:
+          # - name: ECHO_TEXT
+          #   valueFrom:
+          #     secretKeyRef:
+          #       name: example1
+          #       key: password
           # - name: SECRET_USERNAME
           #   valueFrom:
           #     secretKeyRef:
