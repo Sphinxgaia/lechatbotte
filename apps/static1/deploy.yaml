@@ -33,7 +33,6 @@ spec:
               secretKeyRef:
                 name: example1
                 key: password
-          env:
           - name: SECRET_USERNAME2
             valueFrom:
               secretKeyRef:
