@@ -17,7 +17,7 @@ spec:
         - name: echo-server
           image: hashicorp/http-echo:alpine
           args:
-          - "-text=$SECRET_USERNAME&&$SECRET_PASSWORDé=&&$SECRET_USERNAME2&&$SECRET_PASSWORD2"
+          - "-text=$SECRET_USERNAME&&$SECRET_PASSWORD&&$SECRET_USERNAME2&&$SECRET_PASSWORD2"
           ports:
             - name: http-port
               containerPort: 5678
