@@ -13,7 +13,7 @@ spec:
   source:
     repoURL: https://github.com/Sphinxgaia/lechatbotte.git
     targetRevision: HEAD
-    path: apps/01-agent1
+    path: apps/02-agent1
   destination:
     server: https://kubernetes.default.svc
     namespace: agent1

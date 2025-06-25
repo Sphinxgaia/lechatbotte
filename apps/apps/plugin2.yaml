@@ -13,7 +13,7 @@ spec:
   source:
     repoURL: https://github.com/Sphinxgaia/lechatbotte.git
     targetRevision: HEAD
-    path: apps/03-plugin2
+    path: apps/04-plugin2
     plugin:
       env:
         - name: VAULT_ADDR

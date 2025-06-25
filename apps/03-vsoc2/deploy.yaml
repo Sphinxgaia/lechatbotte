@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: echo-deployment
+  
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: echo-server
+  template:
+    metadata:
+      labels:
+        app: echo-server
+        version: v1
+    spec:
+      serviceAccountName: vault-client
+      containers:
+        - name: echo-server
+          image: hashicorp/http-echo:latest
+          ports:
+            - name: http-port
+              containerPort: 5678
+          env:
+          - name: ECHO_TEXT
+            valueFrom:
+              secretKeyRef:
+                name: example2
+                key: password
+          # - name: SECRET_USERNAME
+          #   valueFrom:
+          #     secretKeyRef:
+          #       name: example1
+          #       key: username
+          # - name: SECRET_PASSWORD
+          #   valueFrom:
+          #     secretKeyRef:
+          #       name: example1
+          #       key: password
+          # - name: SECRET_USERNAME2
+          #   valueFrom:
+          #     secretKeyRef:
+          #       name: example2
+          #       key: username
+          # - name: SECRET_PASSWORD2
+          #   valueFrom:
+          #     secretKeyRef:
+          #       name: example2
+          #       key: password

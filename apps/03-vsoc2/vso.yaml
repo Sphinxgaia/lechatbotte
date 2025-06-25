@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: vault-client
+---
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultAuth
+metadata:
+  name: vault-auth
+spec:
+  vaultAuthGlobalRef:
+    name: vault-auth-global
+    namespace: vso-admin
+  kubernetes:
+    role: vso1
+    serviceAccount: vault-client
