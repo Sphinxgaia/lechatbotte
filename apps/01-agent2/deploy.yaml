@@ -27,6 +27,8 @@ spec:
       containers:
         - name: echo-server
           image: hashicorp/http-echo:latest
+          args:
+            - -text=$(cat /vault/secrets/credentials.txt)
           ports:
             - name: http-port
               containerPort: 5678
