@@ -23,6 +23,7 @@ spec:
           {{- end }}
 
     spec:
+      ServiceAccount: vault-client
       containers:
         - name: echo-server
           image: hashicorp/http-echo:latest
