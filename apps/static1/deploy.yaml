@@ -22,24 +22,27 @@ spec:
               containerPort: 5678
           env:
           - name: ECHO_TEXT
-            value: "$(SECRET_USERNAME)&&$(SECRET_PASSWORD)&&$(SECRET_USERNAME2)&&$(SECRET_PASSWORD2)"
-          - name: SECRET_USERNAME
-            valueFrom:
-              secretKeyRef:
-                name: example1
-                key: username
-          - name: SECRET_PASSWORD
             valueFrom:
               secretKeyRef:
                 name: example1
                 key: password
-          - name: SECRET_USERNAME2
-            valueFrom:
-              secretKeyRef:
-                name: example2
-                key: username
-          - name: SECRET_PASSWORD2
-            valueFrom:
-              secretKeyRef:
-                name: example2
-                key: password
+          # - name: SECRET_USERNAME
+          #   valueFrom:
+          #     secretKeyRef:
+          #       name: example1
+          #       key: username
+          # - name: SECRET_PASSWORD
+          #   valueFrom:
+          #     secretKeyRef:
+          #       name: example1
+          #       key: password
+          # - name: SECRET_USERNAME2
+          #   valueFrom:
+          #     secretKeyRef:
+          #       name: example2
+          #       key: username
+          # - name: SECRET_PASSWORD2
+          #   valueFrom:
+          #     secretKeyRef:
+          #       name: example2
+          #       key: password
