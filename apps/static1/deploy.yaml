@@ -16,12 +16,12 @@ spec:
       containers:
         - name: echo-server
           image: hashicorp/http-echo:alpine
-          args:
-          - "-text=$SECRET_USERNAME&&$SECRET_PASSWORD&&$SECRET_USERNAME2&&$SECRET_PASSWORD2"
           ports:
             - name: http-port
               containerPort: 5678
           env:
+          - name: ECHO_TEXT
+            value: $(SECRET_USERNAME)&&$(SECRET_PASSWORD)&&$(SECRET_USERNAME2)&&$(SECRET_PASSWORD2)
           - name: SECRET_USERNAME
             valueFrom:
               secretKeyRef:
