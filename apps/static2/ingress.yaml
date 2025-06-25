@@ -25,7 +25,7 @@ metadata:
 spec:
   type: ClusterIP
   ports:
-  - name: "echo-deployment"
+  - name: echo-deployment2
     port: 80
     targetPort: 5678
   selector:
