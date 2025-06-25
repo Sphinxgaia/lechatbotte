@@ -1,0 +1,19 @@
+defaultVaultConnection:
+  enabled: true
+  address: "http://172.18.0.9:8400"
+  skipTLSVerify: false
+controller:
+  manager:
+    clientCache:
+      persistenceModel: direct-encrypted
+      storageEncryption:
+        enabled: true
+        mount: k8s-asp
+        keyName: vso-k8s-asp-cache
+        transitMount: transit-k8s-asp
+        namespace: admin
+        method: kubernetes
+        kubernetes:
+          role: auth-role-operator
+          serviceAccount: vault-secrets-operator-controller-manager
+          tokenAudiences: ["vault"]

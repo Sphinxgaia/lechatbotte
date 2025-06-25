@@ -1,0 +1,198 @@
+COMPUTED VALUES:
+controller:
+  affinity: {}
+  annotations: {}
+  controllerConfigMapYaml:
+    health:
+      healthProbeBindAddress: :8081
+    leaderElection:
+      leaderElect: true
+      resourceName: b0d477c0.hashicorp.com
+    metrics:
+      bindAddress: 127.0.0.1:8080
+    webhook:
+      port: 9443
+  extraLabels: {}
+  hostAliases: []
+  imagePullSecrets: []
+  kubeRbacProxy:
+    image:
+      pullPolicy: IfNotPresent
+      repository: quay.io/brancz/kube-rbac-proxy
+      tag: v0.18.1
+    resources:
+      limits:
+        cpu: 500m
+        memory: 128Mi
+      requests:
+        cpu: 5m
+        memory: 64Mi
+  kubernetesClusterDomain: cluster.local
+  manager:
+    backoffOnSecretSourceError:
+      initialInterval: 5s
+      maxElapsedTime: 0s
+      maxInterval: 60s
+      multiplier: 1.5
+      randomizationFactor: 0.5
+    clientCache:
+      cacheSize: null
+      numLocks: null
+      persistenceModel: ""
+      storageEncryption:
+        appRole:
+          roleId: ""
+          secretRef: ""
+        aws:
+          headerValue: ""
+          iamEndpoint: ""
+          irsaServiceAccount: ""
+          region: ""
+          role: ""
+          secretRef: ""
+          sessionName: ""
+          stsEndpoint: ""
+        enabled: false
+        gcp:
+          clusterName: ""
+          projectID: ""
+          region: ""
+          role: ""
+          workloadIdentityServiceAccount: ""
+        headers: {}
+        jwt:
+          role: ""
+          secretRef: ""
+          serviceAccount: default
+          tokenAudiences: []
+        keyName: ""
+        kubernetes:
+          role: ""
+          serviceAccount: null
+          tokenAudiences: []
+        method: kubernetes
+        mount: kubernetes
+        namespace: ""
+        params: {}
+        transitMount: ""
+        vaultConnectionRef: default
+    extraArgs: []
+    extraEnv: []
+    globalTransformationOptions:
+      excludeRaw: false
+    globalVaultAuthOptions:
+      allowDefaultGlobals: true
+    image:
+      pullPolicy: IfNotPresent
+      repository: hashicorp/vault-secrets-operator
+      tag: 0.9.1
+    logging:
+      level: info
+      stacktraceLevel: panic
+      timeEncoding: rfc3339
+    maxConcurrentReconciles: null
+    resources:
+      limits:
+        cpu: 500m
+        memory: 128Mi
+      requests:
+        cpu: 10m
+        memory: 64Mi
+  nodeSelector: {}
+  podSecurityContext:
+    runAsNonRoot: true
+  preDeleteHookTimeoutSeconds: 120
+  rbac:
+    clusterRoleAggregation:
+      editorRoles: []
+      userFacingRoles:
+        edit: false
+        view: false
+      viewerRoles: []
+  replicas: 1
+  securityContext:
+    allowPrivilegeEscalation: false
+  strategy: {}
+  terminationGracePeriodSeconds: 120
+  tolerations: []
+defaultAuthMethod:
+  allowedNamespaces: []
+  appRole:
+    roleId: ""
+    secretRef: ""
+  aws:
+    headerValue: ""
+    iamEndpoint: ""
+    irsaServiceAccount: ""
+    region: ""
+    role: ""
+    secretRef: ""
+    sessionName: ""
+    stsEndpoint: ""
+  enabled: false
+  gcp:
+    clusterName: ""
+    projectID: ""
+    region: ""
+    role: ""
+    workloadIdentityServiceAccount: ""
+  headers: {}
+  jwt:
+    role: ""
+    secretRef: ""
+    serviceAccount: default
+    tokenAudiences: []
+  kubernetes:
+    role: ""
+    serviceAccount: default
+    tokenAudiences: []
+  method: kubernetes
+  mount: kubernetes
+  namespace: ""
+  params: {}
+  vaultAuthGlobalRef:
+    allowDefault: null
+    enabled: false
+    mergeStrategy:
+      headers: none
+      params: none
+    name: ""
+    namespace: ""
+defaultVaultConnection:
+  address: ""
+  caCertSecret: ""
+  enabled: false
+  headers: {}
+  skipTLSVerify: false
+  tlsServerName: ""
+hooks:
+  resources:
+    limits:
+      cpu: 500m
+      memory: 128Mi
+    requests:
+      cpu: 10m
+      memory: 64Mi
+  upgradeCRDs:
+    backoffLimit: 5
+    enabled: true
+    executionTimeout: 30s
+metricsService:
+  ports:
+  - name: https
+    port: 8443
+    protocol: TCP
+    targetPort: https
+  type: ClusterIP
+telemetry:
+  serviceMonitor:
+    bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+    enabled: false
+    interval: 30s
+    path: /metrics
+    port: https
+    scheme: https
+    scrapeTimeout: 10s
+    selectors: {}
+tests:
+  enabled: true

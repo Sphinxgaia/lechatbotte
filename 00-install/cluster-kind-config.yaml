@@ -1,0 +1,74 @@
+# cluster-config.yml
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+name: chatbotte
+# featureGates:
+#   "MatchLabelKeysInPodAffinity": true
+networking:
+  disableDefaultCNI: true
+  # kubeProxyMode: none
+  ipFamily: ipv4
+  podSubnet: 192.168.0.0/16
+containerdConfigPatches:
+- |
+  [plugins."io.containerd.grpc.v1.cri".registry.mirrors."docker.io"]
+    endpoint = ["http://proxy-docker-hub:5000"]
+- |
+  [plugins."io.containerd.grpc.v1.cri".registry.mirrors."quay.io"]
+    endpoint = ["http://proxy-quay:5000"]
+- |
+  [plugins."io.containerd.grpc.v1.cri".registry.mirrors."k8s.gcr.io"]
+    endpoint = ["http://proxy-k8s-gcr:5000"]
+- |
+  [plugins."io.containerd.grpc.v1.cri".registry.mirrors."gcr.io"]
+    endpoint = ["http://proxy-gcr:5000"]
+nodes:
+- role: control-plane
+  image: 
+  extraPortMappings:
+  - containerPort: 30000
+    hostPort: 30000
+    protocol: TCP
+  - containerPort: 30001
+    hostPort: 30001
+    protocol: TCP
+  - containerPort: 30002
+    hostPort: 30002
+    protocol: TCP
+  - containerPort: 30003
+    hostPort: 30003
+    protocol: TCP
+  - containerPort: 30004
+    hostPort: 30004
+    protocol: TCP
+  - containerPort: 80
+    hostPort: 80
+    protocol: TCP
+  - containerPort: 443
+    hostPort: 443
+    protocol: TCP
+  kubeadmConfigPatches:
+  - |
+    kind: InitConfiguration
+    nodeRegistration:
+      kubeletExtraArgs:
+        node-labels: "ingress-ready=true"
+- role: worker
+  image: kindest/node:v1.33.1@sha256:8d866994839cd096b3590681c55a6fa4a071fdaf33be7b9660e5697d2ed13002
+  kubeadmConfigPatches:
+  - |
+    kind: JoinConfiguration
+    nodeRegistration:
+      kubeletExtraArgs:
+        node-labels: "topology.kubernetes.io/zone=a,tenant=tenant-a"
+- role: worker
+  image: kindest/node:v1.33.1@sha256:8d866994839cd096b3590681c55a6fa4a071fdaf33be7b9660e5697d2ed13002
+  kubeadmConfigPatches:
+  - |
+    kind: JoinConfiguration
+    nodeRegistration:
+      kubeletExtraArgs:
+        node-labels: "topology.kubernetes.io/zone=b,tenant=tenant-a"
+
+
+

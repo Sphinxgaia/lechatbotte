@@ -1,0 +1,18 @@
+defaultVaultConnection:
+  enabled: true
+  address: "http://vault.vault.svc:8200"
+  skipTLSVerify: false
+controller:
+  manager:
+    clientCache:
+      persistenceModel: direct-encrypted
+      storageEncryption:
+        enabled: true
+        mount: kubernetes
+        keyName: vso-kubernetes
+        transitMount: transit-kubernetes
+        method: kubernetes
+        kubernetes:
+          role: auth-role-operator
+          serviceAccount: vault-secrets-operator-controller-manager
+          tokenAudiences: ["vault"]

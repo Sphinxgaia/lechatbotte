@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: vso-admin
+---
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultAuthGlobal
+metadata:
+  namespace: vso-admin
+  name: vault-auth-global
+spec:
+  defaultAuthMethod: kubernetes
+  allowedNamespaces:
+    - "*"
+  kubernetes:
+    audiences:
+    - vault
+    mount: kubernetes
+    tokenExpirationSeconds: 600
+
