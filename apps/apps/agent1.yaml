@@ -1,19 +1,19 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: static1
+  name: agent1
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: app1
+  name: agent1
   namespace: argocd
 spec:
   project: argocd
   source:
     repoURL: https://github.com/Sphinxgaia/lechatbotte.git
     targetRevision: HEAD
-    path: apps/static1
+    path: apps/01-agent1
     plugin:
       env:
         - name: VAULT_ADDR
@@ -27,6 +27,6 @@ spec:
           value: argocd
   destination:
     server: https://kubernetes.default.svc
-    namespace: static1
+    namespace: agent1
   syncPolicy:
     automated: {}

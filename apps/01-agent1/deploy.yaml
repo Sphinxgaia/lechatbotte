@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: echo-deployment
-  namespace: static1
+  
 spec:
   replicas: 1
   selector:
@@ -13,19 +13,30 @@ spec:
       labels:
         app: echo-server
         version: v1
+      annotations:
+        vault.hashicorp.com/agent-inject: 'true'
+        vault.hashicorp.com/role: 'agent1'
+        vault.hashicorp.com/agent-inject-secret-credentials.txt: 'secret/data/agent1/test/config'
+        vault.hashicorp.com/agent-inject-template-credentials.txt: |
+          {{- with secret "agent1/test/config" -}}
+          {{ .Data.username }}:{{ .Data.password }}
+          {{- end }}
+
     spec:
       containers:
         - name: echo-server
           image: hashicorp/http-echo:latest
+          args:
+            - -text=$(cat /varvault/secrets/credentials.txt)
           ports:
             - name: http-port
               containerPort: 5678
-          env:
-          - name: ECHO_TEXT
-            valueFrom:
-              secretKeyRef:
-                name: example1
-                key: password
+          # env:
+          # - name: ECHO_TEXT
+          #   valueFrom:
+          #     secretKeyRef:
+          #       name: example1
+          #       key: password
           # - name: SECRET_USERNAME
           #   valueFrom:
           #     secretKeyRef:

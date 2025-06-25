@@ -2,11 +2,11 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: minimal-ingress
-  namespace: static1
+  
 spec:
   ingressClassName: nginx
   rules:
-  - host: "echo1.192.168.1.31.nip.io"
+  - host: "plugin1.192.168.1.31.nip.io"
     http:
       paths:
       - path: /
@@ -23,7 +23,7 @@ metadata:
   labels:
     app: echo-service
   name: echo-service
-  namespace: static1
+  
 spec:
   type: ClusterIP
   ports:
