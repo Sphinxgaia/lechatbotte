@@ -12,6 +12,21 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: echo-deployment
+            name: echo-service
             port:
               number: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: echo-service
+  name: echo-service
+spec:
+  type: ClusterIP
+  ports:
+  - name: "echo-deployment"
+    port: 8080
+    targetPort: 80
+  selector:
+    app: echo-server
