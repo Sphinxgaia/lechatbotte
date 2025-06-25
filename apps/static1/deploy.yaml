@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: echo-server
-          image: hashicorp/http-echo:alpine
+          image: hashicorp/http-echo:latest
           ports:
             - name: http-port
               containerPort: 5678
