@@ -16,6 +16,6 @@ spec:
     path: apps/05-full-red
   destination:
     server: https://kubernetes.default.svc
-    namespace: agent1
+    namespace: red
   syncPolicy:
     automated: {}
