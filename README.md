@@ -162,7 +162,7 @@ kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.pas
 
 > ⚠️ nous utilisons nip.io pour générer des dns fonctionnels et locaux
 
-remplacer - `argocd.192.168.1.31.nip.io`
+remplacer - `argocd.127.0.0.1.nip.io`
 
 ```sh
 kubectl apply -n argocd -f argocd/ingress.yaml
@@ -234,11 +234,11 @@ kubectl apply -n vault -f vault/ingress.yaml
 #### Initialiser vault
 
 ```sh
-VAULT_ADDR=http://vault.192.168.1.31.nip.io vault operator init -key-shares=1 -key-threshold=1 > $PWD/vault/vault-key.txt
+VAULT_ADDR=http://vault.127.0.0.1.nip.io vault operator init -key-shares=1 -key-threshold=1 > $PWD/vault/vault-key.txt
 
-VAULT_ADDR=http://vault.192.168.1.31.nip.io vault operator unseal $(grep 'Key 1:' $PWD/vault/vault-key.txt | awk '{print $NF}')
+VAULT_ADDR=http://vault.127.0.0.1.nip.io vault operator unseal $(grep 'Key 1:' $PWD/vault/vault-key.txt | awk '{print $NF}')
 
-VAULT_ADDR=http://vault.192.168.1.31.nip.io vault login $(grep 'Initial Root Token:' $PWD/vault/vault-key.txt | awk '{print $NF}')
+VAULT_ADDR=http://vault.127.0.0.1.nip.io vault login $(grep 'Initial Root Token:' $PWD/vault/vault-key.txt | awk '{print $NF}')
 ```
 
 #### Configurer Vault & Kubernetes
@@ -263,9 +263,9 @@ TOKEN_REVIEW_JWT=$(kubectl get secret $VAULT_SECRET_NAME -n vault-auth-delegator
 > configuration de vault
 
 ```sh
-VAULT_ADDR=http://vault.192.168.1.31.nip.io vault auth enable -path=kubernetes kubernetes
+VAULT_ADDR=http://vault.127.0.0.1.nip.io vault auth enable -path=kubernetes kubernetes
 
-VAULT_ADDR=http://vault.192.168.1.31.nip.io vault write auth/kubernetes/config \
+VAULT_ADDR=http://vault.127.0.0.1.nip.io vault write auth/kubernetes/config \
 token_reviewer_jwt="$TOKEN_REVIEW_JWT" \
 kubernetes_host="$KUBE_HOST" \
 kubernetes_ca_cert="$KUBE_CA_CERT" 
@@ -274,7 +274,7 @@ kubernetes_ca_cert="$KUBE_CA_CERT"
 > Création d'un role
 
 ```sh
-VAULT_ADDR=http://vault.192.168.1.31.nip.io vault write auth/kubernetes/role/argocd \
+VAULT_ADDR=http://vault.127.0.0.1.nip.io vault write auth/kubernetes/role/argocd \
     bound_service_account_names=argocd-repo-server \
     bound_service_account_namespaces=argocd \
     policies=argocd \
@@ -284,16 +284,16 @@ VAULT_ADDR=http://vault.192.168.1.31.nip.io vault write auth/kubernetes/role/arg
 > Création de la policy associée
 
 ```sh
-VAULT_ADDR=http://vault.192.168.1.31.nip.io vault policy write argocd kube-vault/argocd.hcl
+VAULT_ADDR=http://vault.127.0.0.1.nip.io vault policy write argocd kube-vault/argocd.hcl
 ```
 
 > Tester
 
 ```sh
-VAULT_ADDR=http://vault.192.168.1.31.nip.io vault secrets enable -path=secret kv-v2
+VAULT_ADDR=http://vault.127.0.0.1.nip.io vault secrets enable -path=secret kv-v2
 
-VAULT_ADDR=http://vault.192.168.1.31.nip.io vault kv put secret/test/config username="static-user" password="static-password"
-VAULT_ADDR=http://vault.192.168.1.31.nip.io vault kv put secret/test2/config username="static-user2" password="static-password2"
+VAULT_ADDR=http://vault.127.0.0.1.nip.io vault kv put secret/test/config username="static-user" password="static-password"
+VAULT_ADDR=http://vault.127.0.0.1.nip.io vault kv put secret/test2/config username="static-user2" password="static-password2"
 ```
 
 ## Démo - Install Vault Agent
@@ -305,16 +305,16 @@ VAULT_ADDR=http://vault.192.168.1.31.nip.io vault kv put secret/test2/config use
 Créer des secrets pour vos 2 applications
 
 ```sh
-VAULT_ADDR=http://vault.192.168.1.31.nip.io vault kv put secret/agent1/test/config username="static-user" password="static-password"
-VAULT_ADDR=http://vault.192.168.1.31.nip.io vault kv put secret/agent2/test/config username="static-user2" password="static-password2"
+VAULT_ADDR=http://vault.127.0.0.1.nip.io vault kv put secret/agent1/test/config username="static-user" password="static-password"
+VAULT_ADDR=http://vault.127.0.0.1.nip.io vault kv put secret/agent2/test/config username="static-user2" password="static-password2"
 ```
 
 Configurer une policy d'accès
 
 ```sh
-VAULT_ADDR=http://vault.192.168.1.31.nip.io vault policy write agent-ro  kube-vault/agent.hcl
+VAULT_ADDR=http://vault.127.0.0.1.nip.io vault policy write agent-ro  kube-vault/agent.hcl
 
-VAULT_ADDR=http://vault.192.168.1.31.nip.io vault write auth/kubernetes/role/agent1 \
+VAULT_ADDR=http://vault.127.0.0.1.nip.io vault write auth/kubernetes/role/agent1 \
      bound_service_account_names=vault-client \
      bound_service_account_namespaces=agent1,agent2 \
      token_policies=agent-ro \
@@ -339,18 +339,18 @@ Si vous remplacer `vault.hashicorp.com/agent-inject-secret-credentials.txt: 'sec
 Créer des secrets pour vos 2 applications
 
 ```sh
-VAULT_ADDR=http://vault.192.168.1.31.nip.io vault kv put secret/vso1/test/config username="static-user" password="static-password"
-VAULT_ADDR=http://vault.192.168.1.31.nip.io vault kv put secret/vso2/test/config username="static-user2" password="static-password2"
+VAULT_ADDR=http://vault.127.0.0.1.nip.io vault kv put secret/vso1/test/config username="static-user" password="static-password"
+VAULT_ADDR=http://vault.127.0.0.1.nip.io vault kv put secret/vso2/test/config username="static-user2" password="static-password2"
 ```
 
 Configurer une policy d'accès
 
 ```sh
-VAULT_ADDR=http://vault.192.168.1.31.nip.io vault policy write vso-ro  kube-vault/vso.hcl
+VAULT_ADDR=http://vault.127.0.0.1.nip.io vault policy write vso-ro  kube-vault/vso.hcl
 
-VAULT_ADDR=http://vault.192.168.1.31.nip.io vault write auth/kubernetes/role/vso1 \
+VAULT_ADDR=http://vault.127.0.0.1.nip.io vault write auth/kubernetes/role/vso1 \
      bound_service_account_names=vault-client \
-     bound_service_account_namespaces=vsoc1,vsoc2 \
+     bound_service_account_namespaces=vsoc1,vsoc2,red,green \
      token_policies=vso-ro \
      ttl=24h
 ```
@@ -360,12 +360,12 @@ VAULT_ADDR=http://vault.192.168.1.31.nip.io vault write auth/kubernetes/role/vso
 Configurer de la clé de transit et role associé
 
 ```sh
-VAULT_ADDR=http://vault.192.168.1.31.nip.io vault secrets enable -path=transit-kubernetes transit
-VAULT_ADDR=http://vault.192.168.1.31.nip.io vault write -f transit-kubernetes/keys/vso-kubernetes
+VAULT_ADDR=http://vault.127.0.0.1.nip.io vault secrets enable -path=transit-kubernetes transit
+VAULT_ADDR=http://vault.127.0.0.1.nip.io vault write -f transit-kubernetes/keys/vso-kubernetes
 
-VAULT_ADDR=http://vault.192.168.1.31.nip.io vault policy write auth-policy-operator kube-vault/vso-op.hcl
+VAULT_ADDR=http://vault.127.0.0.1.nip.io vault policy write auth-policy-operator kube-vault/vso-op.hcl
 
-VAULT_ADDR=http://vault.192.168.1.31.nip.io vault write auth/kubernetes/role/auth-role-operator \
+VAULT_ADDR=http://vault.127.0.0.1.nip.io vault write auth/kubernetes/role/auth-role-operator \
    bound_service_account_names=vault-secrets-operator-controller-manager \
    bound_service_account_namespaces=vault-secrets-operator \
    token_ttl=0 \
@@ -396,6 +396,26 @@ kubectl apply -f apps/apps/vso2.yaml
 Si vous remplacer `path: vso1/test/config` par le chemin `path: vso2/test/config` cela devrait ne poser aucun problème
 
 
+## Full App front / back
+
+
+```sh
+VAULT_ADDR=http://vault.127.0.0.1.nip.io vault kv put secret/vso-red/color color="red"
+VAULT_ADDR=http://vault.127.0.0.1.nip.io vault kv put secret/vso-green/color color="green"
+``` 
+
+Lancer les applications dans argocd 
+
+```sh
+kubectl apply -f apps/apps/vso1.yaml
+kubectl apply -f apps/apps/vso2.yaml
+```
+
+Changer votre secret
+
+VAULT_ADDR=http://vault.127.0.0.1.nip.io vault kv put secret/vso-green/color color="basic"
+
+
 ## Install Argocd Vault plugin
 
 ![argocd](argocd.png)
@@ -403,8 +423,8 @@ Si vous remplacer `path: vso1/test/config` par le chemin `path: vso2/test/config
 Créer des secrets pour vos 2 applications
 
 ```sh
-VAULT_ADDR=http://vault.192.168.1.31.nip.io vault kv put secret/test/config username="$(echo 'static-user' | base64)" password="$(echo 'static-password' | base64)"
-VAULT_ADDR=http://vault.192.168.1.31.nip.io vault kv put secret/test2/config username="$(echo 'static-user2' | base64)" password="$(echo 'static-password2' | base64)"
+VAULT_ADDR=http://vault.127.0.0.1.nip.io vault kv put secret/test/config username="$(echo 'static-user' | base64)" password="$(echo 'static-password' | base64)"
+VAULT_ADDR=http://vault.127.0.0.1.nip.io vault kv put secret/test2/config username="$(echo 'static-user2' | base64)" password="$(echo 'static-password2' | base64)"
 ```
 
 Installation du plugin en mode sidecar

@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: green
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: green
+  namespace: argocd
+spec:
+  project: argocd
+  source:
+    repoURL: https://github.com/Sphinxgaia/lechatbotte.git
+    targetRevision: HEAD
+    path: apps/05-full-green
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: green
+  syncPolicy:
+    automated: {}

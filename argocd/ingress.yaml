@@ -9,7 +9,7 @@ spec:
   ingressClassName: nginx
   rules:
   # mot clé host pour configuration d'une entrée / domaine
-  - host: argocd.192.168.1.31.nip.io
+  - host: argocd.127.0.0.1.nip.io
     http:
       paths:
       - path: /
