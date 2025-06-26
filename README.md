@@ -407,8 +407,8 @@ VAULT_ADDR=http://vault.127.0.0.1.nip.io vault kv put secret/vso-green/color col
 Lancer les applications dans argocd 
 
 ```sh
-kubectl apply -f apps/apps/vso1.yaml
-kubectl apply -f apps/apps/vso2.yaml
+kubectl apply -f apps/apps/red.yaml
+kubectl apply -f apps/apps/green.yaml
 ```
 
 Changer votre secret
