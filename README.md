@@ -88,7 +88,13 @@ Pour activer l'ingress :
 ```sh
 minikube addons enable ingress
 ```
+Pour activer les volumes
 
+```sh
+minikube addons enable csi-hostpath-driver
+minikube addons enable default-storageclass
+minikube addons enable volumesnapshots
+```
 
 ### CNI calico
 
